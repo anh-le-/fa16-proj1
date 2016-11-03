@@ -1,3 +1,44 @@
 <h3>Trainer</h3>
 <p>Name: <%= @trainer.name if @trainer.name %></p>
 <p>Email: <%= @trainer.email if @trainer.email %></p>
+
+<p>Pokemon: </p>
+  <table class="table">
+    <tbody>
+      <tr>
+        <th>Pokemon Name</th>
+        <th>Pokemon Level</th>
+        <th>Pokemon Health</th>
+        <th> Damage </th>
+        <th> Heal </th>
+      </tr>
+      <% @pokemons.each do |pokemon|%>
+        <tr>
+          <% next if pokemon.health == 0 and @trainer != current_trainer %>
+          <td> <%= pokemon.name %> </td>
+          <td> <%= pokemon.level %> </td>
+          <td> <%= pokemon.health %> </td>
+
+          <td>
+            <% if @trainer != current_trainer %>
+            <%= button_to "Damage!", damage_path(id: pokemon),
+           :class => "button medium", :method => :patch %>
+            <% end %>
+          </td>
+          <td>
+          <% if @trainer == current_trainer %>
+            <%= button_to "Heal", heal_path(id: pokemon), :class => "button medium", :method => :patch %>
+          <% end %>
+          </td>
+       </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+
+<p>
+<% if @trainer == current_trainer %>
+  <%= button_to "Create", new_path, :class => "button medium", :method => :get %>
+<% end %>
+</p>
